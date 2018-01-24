@@ -142,6 +142,11 @@
                         <Font size="29.0" />
                      </font>
                   </Label>
+                  <Label layoutX="655.0" layoutY="76.0" text="Expires:">
+                     <font>
+                        <Font size="29.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </items>

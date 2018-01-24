@@ -18,7 +18,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
-public class Controller {
+public class Controller
+{
 
     @FXML
     private ResourceBundle resources;
@@ -93,7 +94,8 @@ public class Controller {
     private Label SeasonPassDate;
 
     @FXML
-    void initialize() {
+    void initialize()
+    {
         assert AppSplitBar != null : "fx:id=\"AppSplitBar\" was not injected: check your FXML file 'App.fxml'.";
         assert LogInBG != null : "fx:id=\"LogInBG\" was not injected: check your FXML file 'App.fxml'.";
         assert UserNameTextbox != null : "fx:id=\"UserNameTextbox\" was not injected: check your FXML file 'App.fxml'.";
@@ -114,11 +116,12 @@ public class Controller {
     }
 
     private AccountInfo accountInfo;
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy");
 
     private void AppCallBacks()
     {
         AppMain.setVisible(false);
-        new File(System.getProperty("user.home")+"/Accounts").mkdirs();
+        new File(System.getProperty("user.home") + "/Accounts").mkdirs();
         SignUpButton.setOnAction((ActionEvent event) ->
         {
 
@@ -127,7 +130,7 @@ public class Controller {
                 LogInFeeback.setText("You need to enter the Username and Password");
             } else
             {
-                if (new File(System.getProperty("user.home")+"/Accounts/" + UserNameSignupTextbox1.getText() + ".txt").exists())
+                if (new File(System.getProperty("user.home") + "/Accounts/" + UserNameSignupTextbox1.getText() + ".txt").exists())
                 {
                     LogInFeeback.setText("Username already Exists");
                     UserNameSignupTextbox1.setText("");
@@ -135,7 +138,7 @@ public class Controller {
                 } else
                 {
                     File accountFile;
-                    accountFile = new File(System.getProperty("user.home")+"/Accounts/" + UserNameSignupTextbox1.getText() + ".txt");
+                    accountFile = new File(System.getProperty("user.home") + "/Accounts/" + UserNameSignupTextbox1.getText() + ".txt");
 
                     try
                     {
@@ -146,9 +149,11 @@ public class Controller {
                         e.printStackTrace();
                     }
                     signedinas.setText("Signed in as: " + UserNameSignupTextbox1.getText());
-                    try {
+                    try
+                    {
                         balanceSign.setText("Balance: £" + new DecimalFormat("###,###.00").parse(String.valueOf(accountInfo.getBalance())));
-                    } catch (ParseException e) {
+                    } catch (ParseException e)
+                    {
                         e.printStackTrace();
                     }
                     UserNameSignupTextbox1.setText("");
@@ -164,7 +169,7 @@ public class Controller {
 
         LoginButton.setOnAction((event ->
         {
-            File currentAccount = new File(System.getProperty("user.home")+"/Accounts/" + UserNameTextbox.getText() + ".txt");
+            File currentAccount = new File(System.getProperty("user.home") + "/Accounts/" + UserNameTextbox.getText() + ".txt");
             if (currentAccount.exists())
             {
                 try
@@ -218,7 +223,7 @@ public class Controller {
             dialog.setTitle("Account Top Up");
             dialog.setHeaderText("Top up");
             dialog.setContentText("Please enter top up amount:");
-            Optional<String> result = dialog.showAndWait();
+            Optional <String> result = dialog.showAndWait();
             result.ifPresent((string) ->
             {
                 double topUpAmount;
@@ -266,15 +271,17 @@ public class Controller {
                         e.printStackTrace();
                     }
                 }
-                if(validNumber){
+                if (validNumber)
+                {
                     StringBuilder validationBuilder = new StringBuilder();
-                    for (int i = 0; i < 5; i++){
-                        validationBuilder.append((int)Math.floor(Math.random()*10));
+                    for (int i = 0; i < 5; i++)
+                    {
+                        validationBuilder.append((int) Math.floor(Math.random() * 10));
                     }
                     String validationCode = validationBuilder.toString();
-                    String validationMessage = "Please enter the following 5 digit code into the app: "+validationCode;
+                    String validationMessage = "Please enter the following 5 digit code into the app: " + validationCode;
                     MessageApi Messenger = new MessageApi();
-                    Messenger.sendMessage(result.get(),validationMessage);
+                    Messenger.sendMessage(result.get(), validationMessage);
 
                     boolean valid = false;
                     while (!valid)
@@ -292,8 +299,7 @@ public class Controller {
                                 accountInfo.setPhoneNumber(result.get());
                                 accountInfo.update();
                                 new Alert(Alert.AlertType.INFORMATION, "Number Verified").showAndWait();
-                            }
-                            else
+                            } else
                             {
                                 new Alert(Alert.AlertType.ERROR, "Code not recognised").showAndWait();
                             }
@@ -301,57 +307,95 @@ public class Controller {
                         }
                     }
                 }
-            }else{
+            } else
+            {
                 TextInputDialog numberdialog = new TextInputDialog();
                 numberdialog.setTitle("Login");
                 numberdialog.setHeaderText("Login Code");
                 numberdialog.setContentText("Please enter 6 digit number displayed on car park machine");
                 Optional <String> result = numberdialog.showAndWait();
-                if (result.isPresent()){
+                if (result.isPresent())
+                {
                     try
                     {
                         System.out.println(result.get());
                         //if(!result.get().contains("[0-9]+"))
                         //   throw new NumberFormatException();
                         String verifiyString = accountInfo.Verify(result.get());
-                        Alert feedback1 = new Alert(Alert.AlertType.INFORMATION,"Please enter the following security code in to the car park machine: "+verifiyString);
+                        Alert feedback1 = new Alert(Alert.AlertType.INFORMATION, "Please enter the following security code in to the car park machine: " + verifiyString);
                         feedback1.showAndWait();
                         System.out.println(verifiyString);
-                    }catch (NumberFormatException e){
-                        Alert feedback2 = new Alert(Alert.AlertType.ERROR,"Invalid number, 6 digits in length, displayed on car park's machine");
+                    } catch (NumberFormatException e)
+                    {
+                        Alert feedback2 = new Alert(Alert.AlertType.ERROR, "Invalid number, 6 digits in length, displayed on car park's machine");
                         feedback2.showAndWait();
                     }
                 }
             }
         });
 
-        DayPassButton.setOnAction(event -> {
+        DayPassButton.setOnAction(event ->
+        {
             double price = 5;
-            if(accountInfo.getBalance() >= price){
-                accountInfo.setBalance(accountInfo.getBalance()-price);
+            if (accountInfo.getBalance() >= price)
+            {
+                accountInfo.setBalance(accountInfo.getBalance() - price);
                 updateBalance();
                 accountInfo.setDayPass(Instant.now());
+                updateDates();
+                accountInfo.update();
+            } else
+            {
+                new Alert(Alert.AlertType.ERROR, "Insufficient Funds").showAndWait();
             }
-            updateDates();
         });
 
-        WeekPassButton.setOnAction(event -> {
+        WeekPassButton.setOnAction(event ->
+        {
             double price = 20;
-            if(accountInfo.getBalance() >= price){
-                accountInfo.setBalance(accountInfo.getBalance()-price);
+            if (accountInfo.getBalance() >= price)
+            {
+                accountInfo.setBalance(accountInfo.getBalance() - price);
                 updateBalance();
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(Date.from(Instant.now()));
-                cal.add(Calendar.DATE,7);
-                WeekPassDate.setText("");
+                cal.add(Calendar.DATE, 7);
+                WeekPassDate.setText(formatter.format(cal.getTime()));
                 accountInfo.setWeekPass(cal.toInstant());
+                updateDates();
+                accountInfo.update();
+            } else
+            {
+                new Alert(Alert.AlertType.ERROR, "Insufficient Funds").showAndWait();
             }
-            updateDates();
         });
+
+        SeasonPassButton.setOnAction(event ->
+        {
+            double price = 99;
+            if (accountInfo.getBalance() >= price)
+            {
+                accountInfo.setBalance(accountInfo.getBalance() - price);
+                updateBalance();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(Date.from(Instant.now()));
+                cal.add(Calendar.DATE, 7 * 8);
+                WeekPassDate.setText(formatter.format(cal.getTime()));
+                accountInfo.setSeasonPass(cal.toInstant());
+                updateDates();
+                accountInfo.update();
+            } else
+            {
+                new Alert(Alert.AlertType.ERROR, "Insufficient Funds").showAndWait();
+            }
+        });
+
+        updateDates();
 
     }
 
-    private void updateBalance(){
+    private void updateBalance()
+    {
         try
         {
             balanceSign.setText("Balance: £" + new DecimalFormat("###,###.00").parse(String.valueOf(accountInfo.getBalance())));
@@ -361,13 +405,13 @@ public class Controller {
         }
     }
 
-    private void updateDates(){
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy");
+    private void updateDates()
+    {
         Date day = Date.from(accountInfo.getDayPass());
         DayPassDate.setText(formatter.format(day));
         Date week = Date.from(accountInfo.getWeekPass());
-        DayPassDate.setText(formatter.format(day));
+        WeekPassDate.setText(formatter.format(week));
         Date season = Date.from(accountInfo.getSeasonPass());
-        DayPassDate.setText(formatter.format(day));
+        SeasonPassDate.setText(formatter.format(season));
     }
 }
