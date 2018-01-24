@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.*;
 
 import com.twilio.type.PhoneNumber;
 import javafx.event.ActionEvent;
@@ -73,6 +73,24 @@ public class Controller {
 
     @FXML
     private Label balanceSign;
+
+    @FXML
+    private Button DayPassButton;
+
+    @FXML
+    private Button WeekPassButton;
+
+    @FXML
+    private Button SeasonPassButton;
+
+    @FXML
+    private Label DayPassDate;
+
+    @FXML
+    private Label WeekPassDate;
+
+    @FXML
+    private Label SeasonPassDate;
 
     @FXML
     void initialize() {
@@ -258,17 +276,28 @@ public class Controller {
                     MessageApi Messenger = new MessageApi();
                     Messenger.sendMessage(result.get(),validationMessage);
 
-                    TextInputDialog codedialog = new TextInputDialog();
-                    codedialog.setTitle("Verify Number");
-                    codedialog.setHeaderText("Enter 5 digit number in the text message.");
-                    codedialog.setContentText("Please enter 5 digit code:");
-                    Optional <String> result2 = codedialog.showAndWait();
-                    boolean valid;
-                    if (result2.isPresent()){
-                        if(result2.get().equals(validationCode)){
-                            valid = true;
-                            accountInfo.setPhoneNumber(result.get());
-                            accountInfo.update();
+                    boolean valid = false;
+                    while (!valid)
+                    {
+                        TextInputDialog codedialog = new TextInputDialog();
+                        codedialog.setTitle("Verify Number");
+                        codedialog.setHeaderText("Enter 5 digit number in the text message.");
+                        codedialog.setContentText("Please enter 5 digit code:");
+                        Optional <String> result2 = codedialog.showAndWait();
+                        if (result2.isPresent())
+                        {
+                            if (result2.get().equals(validationCode))
+                            {
+                                valid = true;
+                                accountInfo.setPhoneNumber(result.get());
+                                accountInfo.update();
+                                new Alert(Alert.AlertType.INFORMATION, "Number Verified").showAndWait();
+                            }
+                            else
+                            {
+                                new Alert(Alert.AlertType.ERROR, "Code not recognised").showAndWait();
+                            }
+
                         }
                     }
                 }
@@ -296,5 +325,49 @@ public class Controller {
             }
         });
 
+        DayPassButton.setOnAction(event -> {
+            double price = 5;
+            if(accountInfo.getBalance() >= price){
+                accountInfo.setBalance(accountInfo.getBalance()-price);
+                updateBalance();
+                accountInfo.setDayPass(Instant.now());
+            }
+            updateDates();
+        });
+
+        WeekPassButton.setOnAction(event -> {
+            double price = 20;
+            if(accountInfo.getBalance() >= price){
+                accountInfo.setBalance(accountInfo.getBalance()-price);
+                updateBalance();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(Date.from(Instant.now()));
+                cal.add(Calendar.DATE,7);
+                WeekPassDate.setText("");
+                accountInfo.setWeekPass(cal.toInstant());
+            }
+            updateDates();
+        });
+
+    }
+
+    private void updateBalance(){
+        try
+        {
+            balanceSign.setText("Balance: £" + new DecimalFormat("###,###.00").parse(String.valueOf(accountInfo.getBalance())));
+        } catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateDates(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy");
+        Date day = Date.from(accountInfo.getDayPass());
+        DayPassDate.setText(formatter.format(day));
+        Date week = Date.from(accountInfo.getWeekPass());
+        DayPassDate.setText(formatter.format(day));
+        Date season = Date.from(accountInfo.getSeasonPass());
+        DayPassDate.setText(formatter.format(day));
     }
 }

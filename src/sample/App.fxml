@@ -102,12 +102,42 @@
                         <Font size="32.0" />
                      </font>
                   </Button>
-                  <Label fx:id="signedinas" layoutX="374.0" layoutY="28.0" prefHeight="43.0" prefWidth="333.0" text="Signed in as: ">
+                  <Label fx:id="signedinas" layoutX="357.0" layoutY="28.0" prefHeight="43.0" prefWidth="333.0" text="Signed in as: ">
                      <font>
                         <Font size="29.0" />
                      </font>
                   </Label>
-                  <Label fx:id="balanceSign" layoutX="374.0" layoutY="84.0" prefHeight="43.0" prefWidth="298.0" text="Balance:">
+                  <Label fx:id="balanceSign" layoutX="357.0" layoutY="71.0" prefHeight="43.0" prefWidth="298.0" text="Balance:">
+                     <font>
+                        <Font size="29.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="DayPassButton" layoutX="357.0" layoutY="117.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="272.0" text="Day Pass £5">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="WeekPassButton" layoutX="357.0" layoutY="202.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="272.0" text="Week Pass £20">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="SeasonPassButton" layoutX="357.0" layoutY="289.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="272.0" text="Season Pass £99">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="DayPassDate" layoutX="655.0" layoutY="130.0" prefHeight="43.0" prefWidth="333.0" text="00/00/0000">
+                     <font>
+                        <Font size="29.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="WeekPassDate" layoutX="655.0" layoutY="215.0" prefHeight="43.0" prefWidth="333.0" text="00/00/0000">
+                     <font>
+                        <Font size="29.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="SeasonPassDate" layoutX="655.0" layoutY="302.0" prefHeight="43.0" prefWidth="333.0" text="00/00/0000">
                      <font>
                         <Font size="29.0" />
                      </font>

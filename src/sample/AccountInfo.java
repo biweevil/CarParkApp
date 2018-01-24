@@ -49,6 +49,13 @@ public class AccountInfo
         }
     }
 
+    public void sendMessage(String text){
+        if(!phoneNumber.equals("")){
+            MessageApi messageApi = new MessageApi();
+            messageApi.sendMessage(phoneNumber,text);
+        }
+    }
+
     public String Verify(String input)
     {
         String key = String.valueOf(input)+accountFile.getName()+input;
@@ -92,6 +99,36 @@ public class AccountInfo
         }catch (Exception e){
             return false;
         }
+    }
+
+    public Instant getSeasonPass()
+    {
+        return seasonPass;
+    }
+
+    public void setSeasonPass(Instant seasonPass)
+    {
+        this.seasonPass = seasonPass;
+    }
+
+    public Instant getWeekPass()
+    {
+        return weekPass;
+    }
+
+    public void setWeekPass(Instant weekPass)
+    {
+        this.weekPass = weekPass;
+    }
+
+    public Instant getDayPass()
+    {
+        return dayPass;
+    }
+
+    public void setDayPass(Instant dayPass)
+    {
+        this.dayPass = dayPass;
     }
 
     public void setBalance(double balance)

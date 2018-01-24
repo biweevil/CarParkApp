@@ -13,7 +13,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("App.fxml"));
         Parent root = (Parent) loader.load();
         Controller controller = loader.getController();
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Car Park App");
         primaryStage.setScene(new Scene(root, 1200, 600));
         primaryStage.show();
     }
