@@ -390,7 +390,7 @@ public class Controller
             }
         });
 
-        updateDates();
+
 
     }
 
